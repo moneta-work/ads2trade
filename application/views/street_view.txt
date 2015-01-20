@@ -1,0 +1,27 @@
+<?php
+class draw_radius extends CI_Controller {
+
+	function __construct(){
+		parent::__construct();
+		// Load the library
+        $this->load->library('googlemaps');
+		
+		}
+
+	public function index()
+	{
+	$this->load->view('draw_radius');
+	}
+	public function draw2(){
+	$config['center'] = '-26.07387, 28.01199';
+$config['zoom'] = '13';
+$config['drawing'] = true;
+$config["map_width"] = '60%';
+$config['drawingDefaultMode'] = 'circle';
+$config['drawingModes'] = array('circle','rectangle','polygon');
+$this->googlemaps->initialize($config);
+$data['map'] = $this->googlemaps->create_map();
+
+$this->load->view('opt2_draw', $data);
+	}
+	}

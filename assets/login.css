@@ -1,0 +1,32 @@
+
+body { background-color: #52bad5;}
+.page_wrap{ background-color: #f7f7f7;}
+.main{ padding: 30px;}
+.ntp{ padding-top: 0px;}
+.dashboard{ padding-top: 20px;}
+.thumbnail{ margin-bottom: 0px;}
+.clear{ clear: both;}
+.nb .list-group-item{ padding-left: 0px; padding-right: 0px; border-left: none; border-right: none; border-bottom: none;}
+.nb .list-group-item.fist-item{ border-top: none;}
+h1,h2,h3{ font-family: 'Open Sans'; font-weight: 100; }
+a{ color: #888;}
+
+label{ display: block; font-weight: normal; }
+.form-control{ border: solid 2px #ccc; background-color: #fff; }
+select.form-control{background-color: #F3F3F3; background-image: -webkit-linear-gradient(top,#FEFEFE,#F3F3F3); background-image: -moz-linear-gradient(top,#fefefe,#f3f3f3); }
+
+/* =Side Bar
+----------------------------------------------- */
+.login_form{ padding-top: 60px; margin: 0px auto; width: 450px;}
+.login_form .form-control{ margin-bottom: 20px;}
+.login_form .btn{ background: #C3D500;
+border: none;
+border-bottom: 4px solid #21788f;
+background: #2a89a1;
+transition: background, color, .3s;
+-webkit-transition: background, color, .3s;
+text-align: center; display: block; width: 100%; font-size: 20px; padding: 15px;}
+.login_form .message{ padding-top: 20px;}
+.login_form .logo{ text-align: center; height: 98px; margin-bottom: 30px;}
+
+.fbkg{ border-radius: 5px; background-color: #fff; padding: 40px; margin-bottom: 60px;}

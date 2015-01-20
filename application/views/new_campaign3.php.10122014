@@ -1,0 +1,258 @@
+<style>
+    .modal.large {
+        width: 80%;
+    }
+</style>
+<div style="height:0px; width: 0px;">
+    <?php
+    echo $map1['js'];
+    echo $map1['html'];
+    ?>
+
+</div>
+<body onload="load()">
+    <div class="breadcrumbs">
+        <h1><span class="glyphicon glyphicon-list-alt"></span>RFP : : Create A New Campaign</h1>
+    </div>
+    <div class="main col-xs-12">
+        <form method="post">
+            <ul class="nav navbar-nav section-menu">
+                <li class="active"><a href="#">Search</a></li>
+                <li><a href="#">Your Active Bids<span class="badge"><?php echo '0'; ?></span></a></li>
+                <li><a href="#">Watch List<span class="badge"><?php echo '2'; ?></span></a></li>
+                <li><a href="#">Won Bids</a></li>
+                <li><a href="#">Lost Bids</a></li>
+            </ul>
+
+
+            <div class="clear"></div>
+
+            <div class="alert alert-info" role="alert">
+                <span class="glyphicon glyphicon-info-sign"></span>
+                Please Make Budget Allocations and Choose Sizes for your Media Types </div>
+
+            <br>
+        </form>
+           <?php
+        $attributes = array('id' => 'newCampaign1');
+        $data = array('onsubmit' => "test()");
+        echo form_open('new_campaign', $data);
+        ?>
+        <div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Campaign Title</th>
+                        <th>Campaign Budget</th>
+                        <th>Media Families</th>
+                        <th>Media Types</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Respond By Date</th>
+                        <th>Partial Availability</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                <td><?php echo ucwords($camp_title); ?><input type="hidden" name ="camp_title" id="camp_title" value="<?php echo $camp_title ?>" /></td>
+                <td><strong><?php echo $budget; ?><input type='hidden' name='budget' id="budget" value="<?php echo $budget; ?>" /></strong></td>
+               
+               <td><input type="hidden" name="media_families" id="media_families" value="<?php print_r($mef_id);?>"/><?php
+                 
+                 foreach ($mef_id as $key) {
+  
+     echo '<p>', ucwords($key);
+ 
+}
+    
+    ?></td>
+
+                <td><input type="hidden" name="media_types" id="media_types" value="<?php print_r($mec_id);?>"/><?php
+                 
+                 foreach ($my_categories as $key => $value) {
+  foreach ($value as $data => $my_cats) {
+     echo '<p>', ucwords($my_cats->mec_description);
+  }
+}
+    
+    ?></td>
+                <td><?php echo $from_date; ?><input type="hidden" name="from_date" id="from_date" value="<?php echo $from_date; ?>"/></td>
+                <td><?php echo $to_date; ?><input type="hidden" name="to_date" id="to_date" value="<?php echo $to_date; ?>"/></td>
+                <td><?php echo $respond_date; ?><input type="hidden" name="respond_date" id="respond_date" value="<?php echo $respond_date; ?>"/></td>
+                <td><?php
+                    if (isset($partial_availability)) {
+                        echo 'YES';
+                    } else {
+                        echo 'NO';
+                    }
+    ?><input type="hidden" name="partial_availability" id="partial_availability" value="<?php echo $partial_availability; ?>"/></td>
+                <td><?php echo ucwords($description) ?><input type="hidden" name="description" id="description" value="<?php echo $description; ?>"/></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+   <div>
+       
+         <div class="alert alert-info" role="alert">
+                <span class="glyphicon glyphicon-info-sign"></span>
+                Campaign Details </div>
+                   
+              <?php  $count = 0; foreach ($streetAdd as $key){
+                echo '<strong>', ucwords("area: "), $streetAdd[$count], '         <a class="glyphicon glyphicon-new-window" type="submit" data-toggle="modal" data-target="#mapModal" data-latLng="-26.2041028, 28.047305100000017"></a><br>';
+              ?>   
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Media Type</th>
+                        <th>Quantity Required</th>
+                        <th>Average Asset Price</th>
+                        <th>Remaining Total</th>
+                        <th>More Options</th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                   <?php foreach ($my_categories as $key) { //loop thru chosen media types
+                                  foreach ($key as $data) {
+                    ?>
+                    <tr>
+
+                        <td><?php echo strtoupper($data->mec_description);?><input type="hidden" id="media_category" name="media_category" value="<?php echo $data->mec_description;?>"></input></td>
+                        <td><input type="text" class="form-control" name="med_quantity" id="med_quantity" placeholder="Quantity Required" /></td>
+                        <td><input type="text" readonly="true" name="avg_total" id="avg_total" class="form-control" /></td>
+                        <td><input type="text" readonly="true" name="rem_total" id="rem_total" class="form-control" /></td>
+                        <td><?php echo "<a class='js-fire-modal btn btn-info' type='submit' data-toggle='modal' href='#' name='size_button'  onClick='sizeModal()'>>>></a>";?></td>
+                      </tr>
+                  <?php }}?>  
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+            <?php $count++;}?>
+            <p>Remaining Total:
+            <p><button type="submit" class="js-fire-modal btn btn-info">Cancel</button>
+            <button type="submit" class="js-fire-modal btn btn-info">Submit Campaign</button>
+        </div>     
+       
+<?php echo form_close(); ?>
+
+ <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+            <div class="modal-dialog" style="width: 75%">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                        <h4 class="modal-title" id="myModalLabel">View Location Map</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="campaign_map_canvas" style="width: 100%; height: 500px"></div>
+                        <div id="campaign_images" style="width: 100%; height: 800px;"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+ <!-- Mapping Requirements -->
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/mapping/css/mapping_styles.css">
+        <!-- Maps already loaded from php -->
+        <script type="text/javascript" src="<?php echo base_url(); ?>assets/mapping/js/AdsMapRFC.js"></script>       
+<script>
+            var base_url = '<?php echo base_url(); ?>';
+            var adsMap = false;
+            function adsMapInit() {
+                $('#mapModal').on('shown.bs.modal', function (e) {
+                    var tmp_id = $(e.relatedTarget).attr('data-latLng');
+
+                    var parts = tmp_id.split(',');
+                    var position = new google.maps.LatLng(parts[0], parts[1]);
+
+                    var mapOptions = {
+                        center: position,
+                        zoom: 10
+                    };
+                    var campaign_map = new google.maps.Map(document.getElementById("campaign_map_canvas"), mapOptions);
+
+
+                    var selected_marker = new google.maps.Marker({
+                        position: position,
+                        map: campaign_map,
+                        icon: base_url + 'assets/mapping/images/user_marker.png'
+                    });
+                    var optOptions = {
+                        urlBase: base_url,
+                        markers: [selected_marker],
+                        showRadii: true,
+                        currentFilterCriteria: {},
+                        showSearchPOIButton: true,
+                        showFilterButton: true
+                    };
+                    var clusterOptions = {};
+                    var spiderOptions = {};
+                    var html2canvasOptions = {
+                        logging: true
+                    };
+                    adsMap = new AdsMap(campaign_map, clusterOptions, spiderOptions, html2canvasOptions, optOptions);
+                    google.maps.event.trigger(campaign_map,'resize');
+
+                    var campaign = new AdsMap.Campaign(adsMap, {url: base_url + 'index.php/new_campaign/upload_campaign', onsuccess: function() {
+                            $('#mapModal').modal('hide');
+                            alert('Succesfully posted images');
+                        }}, {id: tmp_id});
+                    $('#campaign_images').html(campaign.edit());
+                });
+
+            }
+            google.maps.event.addDomListener(window, 'load', adsMapInit);
+</script>
+ <script type="text/javascript" language="javascript">
+            $(document).ready(function() {
+     
+                $.post( 
+                base_url + '/index.php/new_campaign/saveCampaign',
+                { name: $('#campaign_desc').val(),
+                    budget: $('#camp_budget').val()},
+                function(data) {
+                    //$('#stage').html(data);
+                }
+
+            );
+            });
+        </script>

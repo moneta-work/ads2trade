@@ -1,0 +1,156 @@
+<?php error_reporting(0);?>
+<?php ob_start(); ?>
+<?php
+
+//following class accesses the lms_user tuple
+class auction extends CI_Model {
+
+ 	
+        function create_auction () {
+            
+        $ass_id = $_POST['ass_id'];
+        $user = $this->session->userdata('use_id');
+        $title = $_POST['ass_name'];
+        $from_date = $_POST['from_date'];
+  //      $to_date = $_POST['to_date'];
+        $duration = $_POST['duration'];
+        $price = $_POST['price'];
+        $buy_now = $_POST['buy_now'];
+        $increment = $_POST['increment'];
+        
+             $this->db->query(
+                     "INSERT INTO `auctions` (`ass_id`,`use_id`,`title`,`subtitle`,`starts`,`duration`,`minimum_bid`,`buy_now`,`auction_type`,`increment`) 
+                     VALUES ('$ass_id','$user','$title','$title','$from_date','$duration','$price','$buy_now','1','$increment')"
+                     );
+            // $this->db->insert('assssssetsi', $data); 
+
+	} 
+        
+         function approve_auction () {
+        $ass_id = $_POST['ass_id'];
+        if (!isset($ass_id)){
+             $ass_id = $_REQUEST['asst_id'];
+            
+        }
+        
+        
+            if (isset($_POST['approve'])) {
+             $this->db->query("Update `auctions` set status = '1' where id ='$ass_id'" );
+            }
+             if (isset($_POST['decline'])) {
+             $this->db->query("Update `auctions` set status = '9' where id ='$ass_id'" );
+            }
+            
+             
+             
+             
+            // $this->db->insert('assssssetsi', $data); 
+
+	} 
+         function add_all_auction () {
+               
+        
+             $this->db->query("Update `auctions` set status = '1' where status='0'" );
+
+
+	}
+        
+        function remove_all_auction () {
+               
+        
+             $this->db->query("Update `auctions` set status = '9' where status='0'" );
+
+
+	} 
+        function create_bid() {
+        if(isset($_GET)){
+            
+        $amount = $_GET['bid']; 
+        $ass_id = $_GET['ass_id'];
+        $id = $_GET['auct_id'];
+        }elseif (isset($_POST)){
+        $amount = $_POST['email']; 
+        $ass_id = $_POST['ass_id'];
+        $id = $_POST['auct_id'];}
+        $user = 5;// $this->session->userdata('use_id');
+        
+        $this->db->query(
+                     "INSERT INTO `bids` (`auction`,`bidder`,`bid`,`bidwhen`,`quantity`) 
+                     VALUES ('$id','$user','$amount',now(),'1')"
+                     );
+        //update current bid
+        $this->db->query(
+                     "Update `auctions` set current_bid = '$amount' where id = 
+                     '$id'"
+                     );
+        
+        
+        }
+        
+        
+        function buy_now() {
+        $amount = $_POST['email']; 
+        $ass_id = $_POST['ass_id'];
+        $id = $_POST['auct_id'];
+        $user = $this->session->userdata('use_id');
+        
+        echo 'to payment gateway';exit;
+        
+        
+        }
+        
+        function add_watch() {
+        $ass_id = $_REQUEST['ass_id'];
+        $user = $this->session->userdata('use_id');
+        $id = $_REQUEST['auct_id'];
+         $this->db->query(
+                     "INSERT INTO `watch_list` (`ass_id`,`use_id`,`auction`,`start_date`,`status`) 
+                     VALUES ('$ass_id','$user','$id',now(),'1')"
+                     );
+        
+        
+        }
+        
+          function remove_watch() {
+        $ass_id = $_REQUEST['ass_id'];
+        $user = $this->session->userdata('use_id');
+        //$id = $_REQUEST['auct_id'];
+         $this->db->query(
+                     "update `watch_list` set `status` = '0' where ass_id='$ass_id' and use_id='$user'"
+                     );
+        
+        
+        }
+        
+        
+                         
+        function getAsset () {
+                if (isset($_REQUEST['ass_id'])){
+                
+                $this->db->where('ass_id', $_REQUEST['ass_id']);
+                
+	       
+                }
+             
+		$select_query = $this->db->get('asset');
+			
+		if ($select_query->num_rows > 0){//echo "tapinda tapinda amai niyasha. musabaika bus service";exit();
+
+			foreach ($select_query->result() as $row){
+				$data[]=$row;
+			}
+		//print_r($data); exit();
+			return $data;
+
+		}
+		else{
+		return false;
+		}
+
+	} 
+        
+        
+        
+    
+
+}

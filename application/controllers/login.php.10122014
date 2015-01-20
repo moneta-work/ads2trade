@@ -1,0 +1,154 @@
+<?php
+
+if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
+
+class login extends CI_Controller {
+
+    public function __construct() {
+        parent::__construct();
+    }
+
+    public function index() {
+        if (!isset($is_logged_in) || $is_logged_in != true) {
+
+            //  $message = array('error' => 'You do not have permission to access this page');
+            $this->load->view('login', null);
+        }
+    }
+
+    public function logout() {
+        $this->session->unset_userdata('all_session_data');
+        $this->session->unset_userdata('user_id');
+        $this->session->unset_userdata('school_id');
+        $this->session->unset_userdata('user_type');
+        $this->session->sess_destroy();
+        redirect('../');
+        //$this->load->view('login', null);
+    }
+
+    public function validate_credentials() {
+
+        $this->load->model('user');
+        $result = $this->user->getLoginDetails();
+
+
+        if ($result) {//if the user credentials are valid
+            //GET USER TYPE
+            //echo 'baba'; exit;
+            $user_type = $result[0]->ust_id;
+
+
+            //temporary code to implement ACL
+            switch ($user_type) {
+
+                case 1://advertiser login
+
+                    $user_session_data = array(
+                        'username' => $this->input->post('username'),
+                        'is_logged_in' => TRUE,
+                        'user_id' => $result[0]->use_id,
+                        //'school_id' => $result[0]->sch_id,
+                        'user_type' => $result[0]->ust_id,
+                        'user_photo' => $result[0]->use_photo
+                    );
+
+                    $user_type = $this->session->userdata('user_type');
+
+                    $all_session_data = array_merge($user_session_data, $result);
+                    //echo '<pre>',print_r($all_session_data),'</pre>';exit;
+                    $this->session->set_userdata($all_session_data);
+
+                    $user_id = $this->session->userdata('user_id');
+
+                    //echo  "this is the student login"; exit;
+                    $user_id = $this->session->userdata('user_id');
+                    //echo $user_id;exit();
+                    $this->layouts->view('index', null);
+                   // $this->layouts->view('advertiser_dashboard', null);
+
+                    break;
+
+                case 2://media owner login
+
+                    $user_session_data = array(
+                        'username' => $this->input->post('username'),
+                        'is_logged_in' => TRUE,
+                        'user_id' => $result[0]->use_id,
+                        //'school_id' => $result[0]->sch_id,
+                        'user_type' => $result[0]->ust_id,
+                        'user_photo' => $result[0]->use_photo
+                    );
+
+                    $user_type = $this->session->userdata('user_type');
+
+                    $all_session_data = array_merge($user_session_data, $result);
+                    //echo '<pre>',print_r($all_session_data),'</pre>';exit;
+                    $this->session->set_userdata($all_session_data);
+
+                    $user_id = $this->session->userdata('user_id');
+
+                    //echo  "this is the student login"; exit;
+                    $user_id = $this->session->userdata('user_id');
+                    //echo $user_id;exit();
+                   // $this->layouts->view('media_owner_dashboard', null);
+                    $this->layouts->view('index_media', null);
+
+                    break;
+               
+
+                case 3://operator login
+
+                    $user_session_data = array(
+                        'username' => $this->input->post('username'),
+                        'is_logged_in' => TRUE,
+                        'user_id' => $result[0]->use_id,
+                        //'school_id' => $result[0]->sch_id,
+                        'user_type' => $result[0]->ust_id,
+                        'user_photo' => $result[0]->use_photo
+                    );
+
+                    $user_type = $this->session->userdata('user_type');
+
+                    $all_session_data = array_merge($user_session_data, $result);
+                    //echo '<pre>',print_r($all_session_data),'</pre>';exit;
+                    $this->session->set_userdata($all_session_data);
+
+                    $user_id = $this->session->userdata('user_id');
+
+                    //echo  "this is the student login"; exit;
+                    $user_id = $this->session->userdata('user_id');
+                    //echo $user_id;exit();
+                   // $this->layouts->view('operator_dashboard', null);
+                    $this->layouts->view('index_operator', null);
+                    break;
+               
+
+                default:
+                    $this->session->unset_userdata('all_session_data');
+                    redirect(base_url());
+                    break;
+            }
+        } else {
+
+            //exit;
+            // $message = array('error' => 'You do not have permission to access this page');
+
+            redirect(base_url());
+        }
+    }
+    
+
+    public function register_user() {
+        $this->load->view('register_user');
+    }
+
+    public function is_logged_in() {
+        $is_logged_in = $this->session->userdata('is_logged_in');
+        if (!isset($is_logged_in) || $is_logged_in != TRUE) {
+            $message = array('error' => 'You do not have permission to access this page');
+            $this->load->view('login', null);
+        }
+    }
+
+}

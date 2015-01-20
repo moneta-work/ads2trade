@@ -1,0 +1,23 @@
+<?php ob_start(); ?>
+<?php
+
+//following class accesses the lms_user tuple
+class asset_size extends CI_Model {
+
+    function getMediaSizes() {
+
+        $select_query = $this->db->get('asset_size');
+
+        if ($select_query->num_rows > 0) {
+            foreach ($select_query->result() as $row) {
+                $data[] = $row;
+            }
+
+            return $data;
+        } else {
+            return false;
+        }
+    }
+
+    
+}
